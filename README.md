@@ -21,4 +21,6 @@ git clone http://github.com/letimvkocmoc/diploma
 выполнить данное действие.
 2. Создать виртуальное окружение с помощью команды 
 python -m venv venv
-3. 
+3. Установить необходимые библиотеки с помощью команды
+pip install -r requirements.txt
+4. 
