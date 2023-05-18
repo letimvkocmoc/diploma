@@ -1,4 +1,4 @@
-<h2 align="center">Diploma project</h2>
+<h2 align="center">[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=000000&width=435&lines=Diploma+project)](https://git.io/typing-svg)</h2>
 ___
 
 <h3>Наименование</h2>
