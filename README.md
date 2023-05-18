@@ -2,7 +2,7 @@
 <hr>
 
 <h3>Наименование</h2>
-What's on plan
+What's on plan?
 <hr>
 
 <h3>Описание</h2>
