@@ -1,22 +1,21 @@
-<h2 align="center">[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=000000&width=435&lines=Diploma+project)](https://git.io/typing-svg)</h2>
+### [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=000000&width=435&lines=Diploma+project)](https://git.io/typing-svg)</h2>
 ___
-
-<h3>Наименование</h2>
+### Наименование
 What's on plan?
 ___
 
-<h3>Описание</h2>
+### Описание
 Данное приложение является планировщиком задач. С помощью ***What's on plan?*** можно быстро организовать встречу или мероприятие, а также настроить напоминания о событиях, так что вы всегда будете в курсе ближайших дел.
 ___
 
-<h3>Необходимые библиотеки</h2>
+### Необходимые библиотеки
 1. Python
 >При написании данного проекта использовался ***Python*** версии ***3.11***.
 2. Django
 3. PostgresSQL
 ___
 
-<h3>Запуск приложения</h2>
+### Запуск приложения
 1. Склонировать репозиторий приложения с GitHub, для этого потребуется открыть командную строку и с помощью команды
 `git clone http://github.com/letimvkocmoc/diploma`
 выполнить данное действие.
