@@ -36,6 +36,7 @@ jobs:
         run: |-
           mkdir deploy
           cat docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
+          cat todolist/.env | envsubst > deploy/.env
           # cat ./deploy_nginx/nginx.conf | envsubst > deploy/nginx.conf
 
       - name: Clone files to server
@@ -57,3 +58,12 @@ jobs:
           script: |-
             cd deploy
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
+
+      - name: Removing Images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          sript: |
+            docker system prune -a -f
