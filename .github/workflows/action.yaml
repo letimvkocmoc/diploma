@@ -55,5 +55,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd whats_on_plan
+            cd deploy
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
