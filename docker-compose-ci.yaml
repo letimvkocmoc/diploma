@@ -7,9 +7,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "${secrets.DB_NAME}"
-      POSTGRES_USER: "${secrets.DB_USER}"
-      POSTGRES_PASSWORD: "${secrets.DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
     restart: always
     container_name: db
     volumes:
@@ -28,10 +28,10 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: "5432"
-      DB_NAME: "${secrets.DB_NAME}"
-      DB_USER: "${secrets.DB_USER}"
-      DB_PASSWORD: "${secrets.DB_PASSWORD}"
-      SECRET_KEY: "${secrets.SECRET_KEY}"
+      DB_NAME: "${DB_NAME}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      SECRET_KEY: "${SECRET_KEY}"
     restart: always
     depends_on:
       db:
