@@ -55,8 +55,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |-
-            cd home
-            cd deploy
+            pwd
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
 
       - name: Removing Images
