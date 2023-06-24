@@ -59,7 +59,7 @@ jobs:
             whoami
             ls
             pwd
-            # cd deploy
+            cd home/deploy
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
 
       - name: Removing Images
