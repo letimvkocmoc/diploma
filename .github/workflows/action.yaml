@@ -39,7 +39,7 @@ jobs:
           cat ./todolist/.env | envsubst > deploy/.env
 
       - name: Clone files to server
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USERNAME }}
