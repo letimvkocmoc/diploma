@@ -59,4 +59,3 @@ volumes:
   db_data:
   django_static:
 
-
