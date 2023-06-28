@@ -24,7 +24,7 @@ services:
   api:
     image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
     container_name: api
-    command: gunicorn todolist.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     env_file: .env
     environment:
       DB_HOST: db
