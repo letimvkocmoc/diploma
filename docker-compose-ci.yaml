@@ -41,7 +41,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - django_static:/usr/src/app/django_static
 
   frontend:
     image: sermalenk/skypro-front:lesson-36
