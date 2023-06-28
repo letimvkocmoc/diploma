@@ -57,3 +57,12 @@ jobs:
           script: |-
             cd deploy
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose up -d
+
+      - name: Removing Images
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker system prune -a -f
