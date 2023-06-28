@@ -36,7 +36,7 @@ jobs:
         run: |-
           mkdir deploy
           cat docker-compose-ci.yaml | envsubst > deploy/docker-compose.yaml
-          cat ./todolist/.env | envsubst > deploy/.env
+          cat .env | envsubst > deploy/.env
 
       - name: Clone files to server
         uses: appleboy/scp-action@v0.1.4
