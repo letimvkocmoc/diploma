@@ -52,10 +52,6 @@ services:
     depends_on:
       api:
         condition: service_started
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - django_static:/usr/share/nginx/html/django_static
 
 volumes:
   db_data:
-  django_static:
