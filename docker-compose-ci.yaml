@@ -6,6 +6,7 @@ services:
     image: postgres:15.2
     ports:
       - "5432:5432"
+    env_file: ./todolist/.env
     environment:
       POSTGRES_DB: "${DB_NAME}"
       POSTGRES_USER: "${DB_USER}"
@@ -24,7 +25,7 @@ services:
     image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
     container_name: api
     command: gunicorn todolist.wsgi:application --bind 0.0.0.0:8000
-    env_file: .env
+    env_file: ./todolist/.env
     environment:
       DB_HOST: db
       DB_PORT: "5432"
