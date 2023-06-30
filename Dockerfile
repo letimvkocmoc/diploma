@@ -8,17 +8,15 @@ ENV PYTHONNUNBUFFERED 1
 # Обновляет библитеки
 RUN pip install --upgrade pip
 
+WORKDIR /usr/src/app
+
 # Копирует файл с зависимостями
-ADD requirements.txt /usr/src/app/requirements.txt
+ADD requirements.txt .
 
 # Установка зависимостей
-RUN pip install -r /usr/src/app/requirements.txt
+RUN pip install -r requirements.txt
 
-COPY . /usr/src/app
-
-WORKDIR /usr/src/app/todolist
-
-COPY . /usr/src/app/todolist
+COPY . .
 
 EXPOSE 8000
 
