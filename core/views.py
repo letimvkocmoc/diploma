@@ -9,13 +9,9 @@ from rest_framework.generics import (
 
 from rest_framework.response import Response
 
-from models import User
-from serializers import (
-    CreateUserSerializer,
-    LoginSerializer,
-    UserSerializer,
-    UpdatePasswordSerializer,
-)
+
+from .serializers import *
+from .models import User
 
 
 class SignupView(CreateAPIView):

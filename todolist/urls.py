@@ -5,5 +5,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('oauth/', include('social_django.urls', namespace='social')),
-    path('core/', include('core.urls', 'core', namespace='core')),
+    path('core/', include(('core.urls', 'core'), namespace='core')),
 ]
