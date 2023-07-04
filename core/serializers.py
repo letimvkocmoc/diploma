@@ -1,7 +1,5 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from core.models import User
