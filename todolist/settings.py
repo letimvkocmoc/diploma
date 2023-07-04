@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django_filters',
     'core',
     'social_django',
-    'goals',
 ]
 
 MIDDLEWARE = [

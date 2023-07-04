@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model, login, logout
 from rest_framework import generics, status, permissions
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from core.serializers import *
