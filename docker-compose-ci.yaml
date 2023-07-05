@@ -6,9 +6,9 @@ services:
     image: postgres:15.2
     env_file: .env
     environment:
-      ${DB_NAME}: ${DB_NAME}
-      ${DB_USER}: ${DB_USER}
-      ${DB_PASSWORD}: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     restart: always
     container_name: db
     volumes:
