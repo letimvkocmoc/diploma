@@ -6,15 +6,15 @@ services:
     image: postgres:15.2
     env_file: .env
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${secrets.DB_NAME}
+      POSTGRES_USER: ${secrets.DB_USER}
+      POSTGRES_PASSWORD: ${secrets.DB_PASSWORD}
     restart: always
     container_name: db
     volumes:
       - db_data:/var/lib/postgresql/data/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U ${secrets.DB_USER} -d ${secrets.DB_NAME}"]
       interval: 5s
       timeout: 5s
       retries: 15
@@ -26,10 +26,10 @@ services:
     env_file: .env
     environment:
       DB_HOST: db
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      SECRET_KEY: ${SECRET_KEY}
+      DB_NAME: ${secrets.DB_NAME}
+      DB_USER: ${secrets.DB_USER}
+      DB_PASSWORD: ${secrets.DB_PASSWORD}
+      SECRET_KEY: ${secrets.SECRET_KEY}
     restart: always
     depends_on:
       db:
@@ -42,14 +42,13 @@ services:
     container_name: migrations
     env_file: .env
     environment:
-      SECRET_KEY: ${SECRET_KEY}
+      SECRET_KEY: ${secrets.SECRET_KEY}
       DB_HOST: db
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
-      SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+      DB_NAME: ${secrets.DB_NAME}
+      DB_USER: ${secrets.DB_USER}
+      DB_PASSWORD: ${secrets.DB_PASSWORD}
+      SOCIAL_AUTH_VK_OAUTH2_KEY: ${secrets.SOCIAL_AUTH_VK_OAUTH2_KEY}
+      SOCIAL_AUTH_VK_OAUTH2_SECRET: ${secrets.SOCIAL_AUTH_VK_OAUTH2_SECRET}
     depends_on:
       db:
         condition: service_healthy
