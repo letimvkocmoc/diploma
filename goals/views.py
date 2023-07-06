@@ -1,15 +1,22 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
 
-from goals.models import GoalCategory
-from goals.serializers import GoalCreateSerializer, GoalCategorySerializer
+from goals.filters import GoalDateFilter
+from goals.models import GoalCategory, Goal, GoalComment
+from goals.permissions import CommentPermissions
+from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalSerializer, CommentSerializer, \
+    CommentCreateSerializer
 
+
+# ____________________GOAL_CATEGORY_VIEW________________________
 
 class GoalCategoryCreateView(CreateAPIView):
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = GoalCreateSerializer
+    serializer_class = GoalCategoryCreateSerializer
 
 
 class GoalCategoryListView(ListAPIView):
@@ -45,3 +52,62 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
         instance.is_deleted = True
         instance.save()
         return instance
+
+
+# ______________________GOAL_VIEWS__________________________
+
+
+class GoalListView(ListAPIView):
+    """
+    Модель представления, которая позволяет выводить все объекты Goal.
+    Сортировать, фильтровать и искать по полям `title`, `description`
+    """
+    model = Goal
+    permission_classes = [IsAuthenticated]
+    serializer_class = GoalSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter, ]
+    filterset_class = GoalDateFilter
+    search_fields = ["title", "description"]
+    ordering_fields = ["due_date", "priority"]
+    ordering = ["priority", "due_date"]
+
+    def get_queryset(self):
+        return Goal.objects.filter(category__board__participants__user=self.request.user)
+
+
+# ______________GOAL_COMMENT_VIEW___________________
+
+
+class CommentCreateView(CreateAPIView):
+    """ Модель представления, которая позволяет создавать объекты Comment. """
+    model = GoalComment
+    serializer_class = CommentCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CommentDetailView(RetrieveUpdateDestroyAPIView):
+    """ Модель представления, которая позволяет редактировать и удалять объекты Comment. """
+    model = GoalComment
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated, CommentPermissions]
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
+
+
+class CommentListView(ListAPIView):
+    """
+    Модель представления, которая позволяет выводить все объекты Comment.
+    Так же сортирую и делает фильтрацию по полю `goal`.
+    """
+    model = GoalComment
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = LimitOffsetPagination
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields = ["goal"]
+    ordering = "-id"
+
+    def get_queryset(self):
+        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
