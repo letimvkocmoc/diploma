@@ -4,31 +4,54 @@ from django.utils import timezone
 from core.models import User
 
 
-# _____________________GOAL_CATEROGY_MODELS____________________
-
-
-class GoalCategory(models.Model):
-    class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
-
-    title = models.CharField(verbose_name="Название", max_length=255)
-    user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
-    is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
+class DatesModelMixin(models.Model):
+    """ Модель для получения даты создания и даты редактирования объекта """
     created = models.DateTimeField(verbose_name="Дата создания")
     updated = models.DateTimeField(verbose_name="Дата последнего обновления")
 
     def save(self, *args, **kwargs):
-        if not self.id:  # Когда объект только создается, у него еще нет id
+        if not self.id:
+            self.created = timezone.now()
+        self.updated = timezone.now()
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
+
+
+class GoalCategory(DatesModelMixin):
+    """ Модель создания Категории для заметок """
+    title = models.CharField(verbose_name="Название", max_length=255)
+    user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
+    is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # if not self.id: # Когда объект только создается, у него еще нет id
             self.created = timezone.now()  # проставляем дату создания
         self.updated = timezone.now()  # проставляем дату обновления
         return super().save(*args, **kwargs)
 
+    def __str__(self):
+        return '{}'.format(self.title)
 
-# _____________________GOAL_MODELS____________________
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
 
 
-class Goal(models.Model):
+class Goal(DatesModelMixin):
+    """ Модель создания заметки.
+    Статус:
+        :param: 'to_do' - К выполнению
+        :param: 'in_progress' - В процессе
+        :param: 'done' - Выполнено
+        :param: 'archived' - Архив
+    Приоритет:
+        :param: 'low' - Низкий
+        :param: 'medium' - Средний
+        :param: 'high' - Высокий
+        :param: 'critical' - Критический
+    """
     class Status(models.IntegerChoices):
         to_do = 1, "К выполнению"
         in_progress = 2, "В процессе"
@@ -58,19 +81,15 @@ class Goal(models.Model):
         verbose_name_plural = "Цели"
 
 
-# ____________GOAL_COMMENT_MODEL________________
-
-
-class GoalComment(models.Model):
+class GoalComment(DatesModelMixin):
+    """ Модель создания объекта `comment` для модели заметок `goal` """
+    goal = models.ForeignKey(Goal, verbose_name="Цель", related_name="goal_comments", on_delete=models.PROTECT)
+    user = models.ForeignKey(User, verbose_name="Автор ", related_name="goal_comments", on_delete=models.PROTECT)
     text = models.TextField(verbose_name="Текст")
-    goal = models.ForeignKey(Goal, verbose_name="Цель", on_delete=models.CASCADE)
-    user = models.ForeignKey(User, verbose_name="Пользователь", related_name="comments", on_delete=models.PROTECT)
-    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
-    updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
 
     def __str__(self):
-        return 'Comment #{}'.format(self.id)
+        return '{}: {}'.format(self.user, self.goal)
 
     class Meta:
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = "Комментарий к цели"
+        verbose_name_plural = "Комментарии к целям"
