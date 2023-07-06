@@ -18,6 +18,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+ENTRYPOINT ["bash", "entrypoint.sh"]
+
 EXPOSE 8000
 
 # Выполняет запуск сервера
