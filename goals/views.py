@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment
-from goals.permissions import CommentPermissions
+from goals.permissions import CommentPermissions, GoalPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalSerializer, CommentSerializer, \
     CommentCreateSerializer, GoalCreateSerializer
 
