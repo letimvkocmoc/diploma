@@ -8,7 +8,7 @@ from goals.filters import GoalDateFilter
 from goals.models import GoalCategory, Goal, GoalComment
 from goals.permissions import CommentPermissions
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalSerializer, CommentSerializer, \
-    CommentCreateSerializer
+    CommentCreateSerializer, GoalCreateSerializer
 
 
 # ____________________GOAL_CATEGORY_VIEW________________________
@@ -55,6 +55,28 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
 
 
 # ______________________GOAL_VIEWS__________________________
+
+
+class GoalCreateView(CreateAPIView):
+    """ Модель представления, которая позволяет создавать объект Goal """
+    model = Goal
+    serializer_class = GoalCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class GoalDetailView(RetrieveUpdateDestroyAPIView):
+    """ Модель представления, которая позволяет редактировать и удалять объекты Goal. """
+    model = Goal
+    serializer_class = GoalSerializer
+    permission_classes = [IsAuthenticated, GoalPermissions]
+
+    def get_queryset(self):
+        return Goal.objects.filter(category__board__participants__user=self.request.user)
+
+    def perform_destroy(self, instance):
+        instance.status = Goal.Status.archived
+        instance.save()
+        return instance
 
 
 class GoalListView(ListAPIView):
