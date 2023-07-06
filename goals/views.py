@@ -24,7 +24,7 @@ class GoalCategoryListView(ListAPIView):
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter, ]
     ordering_fields = ["title", "created"]
-    filterset_fields = ["board", "user"]
+    filterset_fields = ["user"]
     ordering = ["title"]
     search_fields = ["title"]
 
@@ -94,9 +94,6 @@ class CommentView(RetrieveUpdateDestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated, CommentPermissions]
 
-    def get_queryset(self):
-        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
-
 
 class CommentListView(ListAPIView):
     """
@@ -110,6 +107,3 @@ class CommentListView(ListAPIView):
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_fields = ["goal"]
     ordering = "-id"
-
-    def get_queryset(self):
-        return GoalComment.objects.filter(goal__category__board__participants__user=self.request.user)
