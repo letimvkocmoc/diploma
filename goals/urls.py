@@ -10,11 +10,11 @@ urlpatterns = [
 
     path("goal/create", views.GoalCreateView.as_view(), name='goal_create'),
     path("goal/list", views.GoalListView.as_view(), name='goal_list'),
-    path("goal/<pk>", views.GoalDetailView.as_view(), name='goal_pk'),
+    path("goal/<pk>", views.GoalView.as_view(), name='goal_pk'),
 
     path("goal_comment/create", views.CommentCreateView.as_view(), name='comment_create'),
     path("goal_comment/list", views.CommentListView.as_view(), name='comment_list'),
-    path("goal_comment/<pk>", views.CommentDetailView.as_view(), name='comment_pk'),
+    path("goal_comment/<pk>", views.CommentView.as_view(), name='comment_pk'),
 
     path("board/create", views.BoardCreateView.as_view(), name='board_create'),
     path("board/list", views.BoardListView.as_view(), name='board_list'),
