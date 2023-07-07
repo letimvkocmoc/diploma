@@ -25,7 +25,7 @@ class GoalCategoryListView(ListAPIView):
     search_fields = ['title']
 
     def get_queryset(self):
-        return GoalCategory.object.filter(
+        return GoalCategory.objects.filter(
             user=self.request.user, is_deleted=False
         )
 
