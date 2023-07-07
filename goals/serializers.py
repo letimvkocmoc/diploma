@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from core.serializers import UserSerializer
-from goals.models import GoalCategory, Goal
+from goals.models import GoalCategory, Goal, GoalComment
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
@@ -55,3 +55,30 @@ class GoalSerializer(serializers.ModelSerializer):
         if self.instance.category.board_id != value.board_id:
             raise serializers.ValidationError("Вы не создавали эту категорию")
         return value
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для создания объектов модели GoalComment.
+    Проверяет, является ли пользователь автором комментария.
+    """
+
+    user: serializers.HiddenField = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model: GoalComment = GoalComment
+        fields: list = '__all__'
+        read_only_fields: tuple = ("id", "created", "updated", "user")
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для вывода объектов модели GoalComment.
+    """
+
+    user: UserSerializer = UserSerializer(read_only=True)
+
+    class Meta:
+        model: GoalComment = GoalComment
+        fields: list = '__all__'
+        read_only_fields: tuple = ("id", "created", "updated", "user", "goal")

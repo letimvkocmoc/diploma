@@ -57,3 +57,22 @@ class Goal(models.Model):
     class Meta:
         verbose_name = "Цель"
         verbose_name_plural = "Цели"
+
+
+class GoalComment(models.Model):
+    """
+    Модель комментария к цели.
+    Содержит информацию о тексте, цели, пользователе, дате создания и дате последнего обновления.
+    """
+    text = models.TextField(verbose_name="Текст")
+    goal = models.ForeignKey(Goal, verbose_name="Цель", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name="Пользователь", related_name="comments", on_delete=models.PROTECT)
+    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
+
+    def __str__(self):
+        return 'Comment #{}'.format(self.id)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"

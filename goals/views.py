@@ -5,9 +5,10 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 
 from goals.filters import GoalDateFilter
-from goals.models import GoalCategory, Goal
-from goals.permissions import GoalPermissions
-from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalSerializer, GoalCreateSerializer
+from goals.models import GoalCategory, Goal, GoalComment
+from goals.permissions import GoalPermissions, CommentPermissions
+from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalSerializer, \
+    GoalCreateSerializer, CommentCreateSerializer, CommentSerializer
 
 
 class GoalCategoryCreateView(CreateAPIView):
@@ -68,10 +69,6 @@ class GoalDetailView(RetrieveUpdateDestroyAPIView):
 
 
 class GoalListView(ListAPIView):
-    """
-    Модель представления, которая позволяет выводить все объекты Goal.
-    Сортировать, фильтровать и искать по полям `title`, `description`
-    """
     model: Goal = Goal
     permission_classes: list = [IsAuthenticated]
     serializer_class: GoalSerializer = GoalSerializer
@@ -81,3 +78,26 @@ class GoalListView(ListAPIView):
     search_fields: list = ["title", "description"]
     ordering_fields: list = ["due_date", "priority"]
     ordering: list = ["priority", "due_date"]
+
+
+class CommentCreateView(CreateAPIView):
+    model: GoalComment = GoalComment
+    serializer_class: CommentCreateSerializer = CommentCreateSerializer
+    permission_classes: list = [IsAuthenticated]
+
+
+class CommentDetailView(RetrieveUpdateDestroyAPIView):
+    model: GoalComment = GoalComment
+    serializer_class: CommentSerializer = CommentSerializer
+    permission_classes: list = [IsAuthenticated, CommentPermissions]
+
+
+class CommentListView(ListAPIView):
+
+    model: GoalComment = GoalComment
+    serializer_class: CommentSerializer = CommentSerializer
+    permission_classes: list = [IsAuthenticated]
+    pagination_class: LimitOffsetPagination = LimitOffsetPagination
+    filter_backends: list = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields: list = ["goal"]
+    ordering: str = "-id"
