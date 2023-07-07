@@ -30,6 +30,7 @@ class LoginView(generics.CreateAPIView):
 
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
+    model = USER_MODEL
     serializer_class = UserProfileSerializer
     queryset = USER_MODEL.objects.all()
     permission_classes = [permissions.IsAuthenticated]
