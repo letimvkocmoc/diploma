@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from core.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, validators=[validate_password])
     password_repeat = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -56,7 +57,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True, write_only=True)
-    new_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(required=True, write_only=True, validators=[validate_password])
 
     def validate_old_password(self, value):
         user = self.context['request'].user
