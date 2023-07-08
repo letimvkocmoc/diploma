@@ -6,7 +6,6 @@ from goals.models import Goal
 
 
 class GoalDateFilter(rest_framework.FilterSet):
-    """ Модель Фильтр даты цели """
     class Meta:
         model = Goal
         fields = {
@@ -14,7 +13,6 @@ class GoalDateFilter(rest_framework.FilterSet):
             "category": ("exact", "in"),
             "status": ("exact", "in"),
             "priority": ("exact", "in"),
-            "category__board": ("exact",),
         }
 
     filter_overrides = {
