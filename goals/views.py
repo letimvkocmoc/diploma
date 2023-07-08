@@ -73,10 +73,7 @@ class GoalListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalSerializer
     pagination_class = LimitOffsetPagination
-    filter_backends = [
-        filters.SearchFilter,
-        filters.OrderingFilter
-    ]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = GoalDateFilter
     ordering_fields = ['due_date', 'priority']
     ordering = ['priority', 'due_date']
