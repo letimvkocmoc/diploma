@@ -44,7 +44,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
 
 class GoalSerializer(serializers.ModelSerializer):
-    user = UserSerializer(ready_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Goal
