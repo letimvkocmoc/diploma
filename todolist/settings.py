@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'core',
     'goals',
     'social_django',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -178,3 +179,5 @@ SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+
+BOT_TOKEN = os.environ.get('BOT_TOKEN')

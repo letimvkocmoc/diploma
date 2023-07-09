@@ -61,7 +61,7 @@ services:
       sh -c "python ./manage.py migrate"
 
   frontend:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     container_name: frontend
     restart: always
     ports:
@@ -71,6 +71,22 @@ services:
         condition: service_started
     volumes:
       - django_static:/usr/share/nginx/nginx/html/django_static
+
+  bot:
+    image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
+    container_name: bot
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
+    depends_on:
+      pgdb:
+        condition: service_healthy
+    command: python manage.py runbot
 
 volumes:
   db_data:

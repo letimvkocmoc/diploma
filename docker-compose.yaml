@@ -3,7 +3,7 @@ version: "3.9"
 
 services:
   front:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     container_name: frontend
     ports:
       - "80:80"
@@ -58,6 +58,21 @@ services:
       interval: 5s
       timeout: 5s
       retries: 15
+
+  bot:
+    build: .
+    container_name: bot
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: python manage.py runbot
 
 volumes:
   db_data:
