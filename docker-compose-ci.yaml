@@ -84,7 +84,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       BOT_TOKEN: ${BOT_TOKEN}
     depends_on:
-      pgdb:
+      db:
         condition: service_healthy
     command: python manage.py runbot
 
