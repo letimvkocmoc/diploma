@@ -47,7 +47,7 @@ class Message:
 class UpdateObj:
     """ Обновить объект """
     update_id: int
-    message: Message = '{}'
+    message: Message
 
     class Meta:
         unknown = EXCLUDE
@@ -59,8 +59,6 @@ class GetUpdatesResponse:
     ok: bool
     result: List[UpdateObj]
 
-    Schema: ClassVar[Type[Schema]] = Schema
-
     class Meta:
         unknown = EXCLUDE
 
@@ -70,8 +68,6 @@ class SendMessageResponse:
     """ Отправить сообщение Ответ """
     ok: bool
     result: Message
-
-    Schema: ClassVar[Type[Schema]] = Schema
 
     class Meta:
         unknown = EXCLUDE
