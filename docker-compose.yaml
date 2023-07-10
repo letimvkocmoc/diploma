@@ -2,14 +2,24 @@
 version: "3.9"
 
 services:
-  front:
-    image: sermalenk/skypro-front:lesson-38
-    container_name: frontend
+  db:
+    image: postgres:15.2
     ports:
-      - "80:80"
+      - "5432:5432"
+    env_file: .env
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
     restart: always
-    depends_on:
-      - api
+    container_name: db
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 15
 
   api:
     build: .
@@ -40,25 +50,6 @@ services:
         condition: service_healthy
     command: python manage.py migrate
 
-  db:
-    image: postgres:15.2
-    ports:
-      - "5432:5432"
-    env_file: .env
-    environment:
-      POSTGRES_DB: "postgres"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-    restart: always
-    container_name: db
-    volumes:
-      - db_data:/var/lib/postgresql/data/
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 15
-
   bot:
     build: .
     container_name: bot
@@ -73,6 +64,16 @@ services:
       db:
         condition: service_healthy
     command: python manage.py runbot
+
+  front:
+    image: sermalenk/skypro-front:lesson-38
+    container_name: frontend
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      api:
+        condition: service_started
 
 volumes:
   db_data:

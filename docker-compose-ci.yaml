@@ -24,6 +24,7 @@ services:
     image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
     container_name: api
     command: python manage.py runserver 0.0.0.0:8000
+    env_file: .env.test
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -45,7 +46,7 @@ services:
   migrations:
     image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
     container_name: migrations
-    env_file: .env
+    env_file: .env.test
     environment:
       SECRET_KEY: ${SECRET_KEY}
       DB_HOST: db
@@ -54,23 +55,12 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       SOCIAL_AUTH_VK_OAUTH2_KEY: ${SOCIAL_AUTH_VK_OAUTH2_KEY}
       SOCIAL_AUTH_VK_OAUTH2_SECRET: ${SOCIAL_AUTH_VK_OAUTH2_SECRET}
+      BOT_TOKEN: ${BOT_TOKEN}
     depends_on:
       db:
         condition: service_healthy
     command:
       sh -c "python ./manage.py migrate"
-
-  frontend:
-    image: sermalenk/skypro-front:lesson-38
-    container_name: frontend
-    restart: always
-    ports:
-      - "80:80"
-    depends_on:
-      api:
-        condition: service_started
-    volumes:
-      - django_static:/usr/share/nginx/nginx/html/django_static
 
   bot:
     image: letimvkocmoc/whats_on_plan:${GITHUB_REF_NAME}-${GITHUB_RUN_ID}
@@ -87,6 +77,18 @@ services:
       db:
         condition: service_healthy
     command: python manage.py runbot
+
+  frontend:
+    image: sermalenk/skypro-front:lesson-38
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      api:
+        condition: service_started
+    volumes:
+      - django_static:/usr/share/nginx/nginx/html/django_static
 
 volumes:
   db_data:
